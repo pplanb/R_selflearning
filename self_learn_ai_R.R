@@ -29,21 +29,21 @@ self_learn_ai_R <- function(price_dataset, indicator_dataset, num_bars, timefram
   require(h2o)
   require(tidyverse)
   ### use commented code below to test this function  
-  # source("C:/Users/fxtrams/Documents/000_TradingRepo/R_selflearning/create_labelled_data.R")
-  # source("C:/Users/fxtrams/Documents/000_TradingRepo/R_selflearning/create_transposed_data.R")
-  # source("C:/Users/fxtrams/Documents/000_TradingRepo/R_selflearning/load_data.R")
-  # source("C:/Users/fxtrams/Documents/000_TradingRepo/R_selflearning/test_model.R")
+  # source("D:/TradingRepos/R_selflearning/create_labelled_data.R")
+  # source("D:/TradingRepos/R_selflearning/create_transposed_data.R")
+  # source("D:/TradingRepos/R_selflearning/load_data.R")
+  # source("D:/TradingRepos/R_selflearning/test_model.R")
   # # load prices of 28 currencies
-  # price_dataset <- load_data(path_terminal = "C:/Program Files (x86)/FxPro - Terminal2/MQL4/Files/", trade_log_file = "AI_CP", time_period = 1, data_deepth = "50000")
+  # price_dataset <- load_data(path_terminal = "D:/FxPro - Terminal2/MQL4/Files/", trade_log_file = "AI_CP", time_period = 60, data_deepth = "12000")
   # # load macd indicator of 28 currencies
-  # indicator_dataset <- load_data(path_terminal = "C:/Program Files (x86)/FxPro - Terminal2/MQL4/Files/", trade_log_file = "AI_Macd", time_period = 1, data_deepth = "50000")
+  # indicator_dataset <- load_data(path_terminal = "D:/FxPro - Terminal2/MQL4/Files/", trade_log_file = "AI_Macd", time_period = 60, data_deepth = "12000")
   ## --- use *.rds files provided in the repository as an example
   # price_dataset <- read_rds("test_data/prices1.rds")
   # indicator_dataset <- read_rds("test_data/macd.rds")
   ## ---
-  # num_bars <- 75
-  # timeframe <- 1 # indicates the timeframe used for training (e.g. 1 minute, 15 minutes, 60 minutes, etc)
-  # path_model <- "C:/Users/fxtrams/Documents/000_TradingRepo/R_selflearning/model"
+  # num_bars <- 100
+  # timeframe <- 60 # indicates the timeframe used for training (e.g. 1 minute, 15 minutes, 60 minutes, etc)
+  # path_model <- "D:/TradingRepos/R_selflearning/model"
   # write_log = TRUE
   
   # transform data and get the labels shift rows down Note: the oldest data in the first row!!
@@ -53,7 +53,7 @@ self_learn_ai_R <- function(price_dataset, indicator_dataset, num_bars, timefram
   # dataframe for the DL modelling it contains all the available data. 
   # Note: Zero values in rows will mean that there was no data in the MT4 database. 
   #       These rows will be removed before modelling however it's advisable not to have those as it might give data artefacts!
-  dat16 <- dat14 %>% select(LABEL) %>% bind_cols(dat15) %>% na.omit() %>% filter_all(any_vars(. != 0)) %>% filter(LABEL < 250, LABEL > -250)
+  dat16 <- dat14 %>% select(LABEL) %>% bind_cols(dat15) %>% na.omit() %>% filter_all(any_vars(. != 0)) %>% filter(LABEL < 600, LABEL > -600)
   # checking the data: summary(dat16) # too high values in the LABEL Column are non-sense! hist(dat16$LABEL)
   # # split data to train and test blocks [code before 20180616]
   # test_ind <- 1:round(0.3*(nrow(dat16)))
@@ -134,6 +134,8 @@ self_learn_ai_R <- function(price_dataset, indicator_dataset, num_bars, timefram
   ModelC_prev <- try(h2o.loadModel(paste0(path_model, "/DL_Regression",
                                       num_bars, "-", timeframe)),silent = T)
   if(!class(ModelC_prev)=='try-error'){
+    # save model if it is a first run
+    h2o.saveModel(ModelC, path = path_model, force = T)
     # result prev
     result_prev <- h2o.predict(ModelC_prev, recent_ML) %>% as.data.frame() %>% select(predict) %>% round()
     

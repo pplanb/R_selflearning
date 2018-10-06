@@ -12,25 +12,25 @@ library(h2o)
 library(lubridate)
 library(magrittr)
 #library(plotly)
-source("C:/Users/fxtrams/Documents/000_TradingRepo/R_selflearning/load_data.R")
-source("C:/Users/fxtrams/Documents/000_TradingRepo/R_selflearning/create_labelled_data.R")
-source("C:/Users/fxtrams/Documents/000_TradingRepo/R_selflearning/create_transposed_data.R")
-source("C:/Users/fxtrams/Documents/000_TradingRepo/R_selflearning/self_learn_ai.R")
-source("C:/Users/fxtrams/Documents/000_TradingRepo/R_selflearning/self_learn_ai_R.R")
-source("C:/Users/fxtrams/Documents/000_TradingRepo/R_selflearning/test_model.R")
+source("D:/TradingRepos/R_selflearning/load_data.R")
+source("D:/TradingRepos/R_selflearning/create_labelled_data.R")
+source("D:/TradingRepos/R_selflearning/create_transposed_data.R")
+source("D:/TradingRepos/R_selflearning/self_learn_ai.R")
+source("D:/TradingRepos/R_selflearning/self_learn_ai_R.R")
+source("D:/TradingRepos/R_selflearning/test_model.R")
 
 #absolute path to store model objects (useful when scheduling tasks)
-path_model <- "C:/Users/fxtrams/Documents/000_TradingRepo/R_selflearning/model"
+path_model <- "D:/TradingRepos/R_selflearning/model"
 
 #### Read asset prices and indicators ==========================================
 # load prices of 28 currencies
-prices <- load_data(path_terminal = "C:/Program Files (x86)/FxPro - Terminal2/MQL4/Files/",
+prices <- load_data(path_terminal = "D:/FxPro - Terminal2/MQL4/Files/",
                     trade_log_file = "AI_CP", 
                     time_period = 15,
                     data_deepth = "35000")
 
 # load macd indicator of 28 currencies
-macd <- load_data(path_terminal = "C:/Program Files (x86)/FxPro - Terminal2/MQL4/Files/",
+macd <- load_data(path_terminal = "D:/FxPro - Terminal2/MQL4/Files/",
                   trade_log_file = "AI_Macd", 
                   time_period = 15,
                   data_deepth = "35000")
@@ -40,13 +40,13 @@ macd <- load_data(path_terminal = "C:/Program Files (x86)/FxPro - Terminal2/MQL4
 # macd <- read_rds("test_data/macd.rds")
 
 h2o.init()
-# performing Deep Learning classification using the custom function
-self_learn_ai(price_dataset = prices,
-              indicator_dataset = macd,
-              num_bars = 75,
-              timeframe = 15,
-              path_model = path_model,
-              write_log = TRUE)
+# # performing Deep Learning classification using the custom function
+# self_learn_ai(price_dataset = prices,
+#               indicator_dataset = macd,
+#               num_bars = 75,
+#               timeframe = 15,
+#               path_model = path_model,
+#               write_log = TRUE)
 
 # performing Deep Learning Regression using the custom function
 self_learn_ai_R(price_dataset = prices,
@@ -60,11 +60,9 @@ h2o.shutdown(prompt = F)
 # update trigger in the sandboxes
 # read trigger value to the repository and paste it to the sandboxes
 file.copy(from = file.path(path_model, "LOG", "AI_T-15.csv"), 
-          to = c("C:/Program Files (x86)/FxPro - Terminal2/MQL4/Files/AI_T-15.csv",
-                 "C:/Program Files (x86)/FxPro - Terminal1/MQL4/Files/AI_T-15.csv",
-                 "C:/Program Files (x86)/FxPro - Terminal3/MQL4/Files/AI_T-15.csv",
-                 "C:/Program Files (x86)/FxPro - Terminal4/MQL4/Files/AI_T-15.csv",
-                 "C:/Program Files (x86)/FxPro - Terminal5/MQL4/Files/AI_T-15.csv"),
+          to = c("D:/FxPro - Terminal1/MQL4/Files/AI_T-15.csv",
+                 "D:/FxPro - Terminal2/MQL4/Files/AI_T-15.csv",
+                 "D:/FxPro - Terminal3/MQL4/Files/AI_T-15.csv"),
           overwrite = TRUE) 
 
 
