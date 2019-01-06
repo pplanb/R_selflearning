@@ -24,13 +24,13 @@ path_model <- "D:/TradingRepos/R_selflearning/model"
 
 #### Read asset prices and indicators ==========================================
 # load prices of 28 currencies
-prices <- load_data(path_terminal = "D:/FxPro - Terminal2/MQL4/Files/",
+prices <- load_data(path_terminal = "D:/FxPro - Terminal3/MQL4/Files/",
                     trade_log_file = "AI_CP", 
                     time_period = 60,
                     data_deepth = "12000")
 
 # load macd indicator of 28 currencies
-macd <- load_data(path_terminal = "D:/FxPro - Terminal2/MQL4/Files/",
+macd <- load_data(path_terminal = "D:/FxPro - Terminal3/MQL4/Files/",
                   trade_log_file = "AI_Macd", 
                   time_period = 60,
                   data_deepth = "12000")

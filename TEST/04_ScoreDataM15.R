@@ -15,7 +15,7 @@ source("D:/TradingRepos/R_selflearning/load_data.R")
 source("D:/TradingRepos/R_selflearning/create_transposed_data.R")
 #### Read asset prices and indicators ==========================================
 # load prices of 28 currencies
-sbx <- "D:/FxPro - Terminal2/MQL4/Files"
+sbx <- "D:/FxPro - Terminal3/MQL4/Files"
 sbx_masterT1 <- "D:/FxPro - Terminal1/MQL4/Files"
 sbx_slaveT3 <- "D:/FxPro - Terminal3/MQL4/Files"
 
@@ -23,7 +23,7 @@ time_frame <- 15         #this is to define chart timeframe periodicity
 predictor_period <- 75  #this variable will define market type period (number of bars)
 
 # load macd indicator of 28 currencies, use for demo: macd <- read_rds("test_data/macd.rds")
-macd <- load_data(path_terminal = "D:/FxPro - Terminal2/MQL4/Files/",
+macd <- load_data(path_terminal = "D:/FxPro - Terminal3/MQL4/Files/",
                   trade_log_file = "AI_Macd", 
                   time_period = time_frame,
                   data_deepth = "300")
